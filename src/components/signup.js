@@ -1,54 +1,41 @@
-import React,{useState,useEffect} from 'react';
-import {useHistory} from 'react-router-dom';
+import React ,{useState,useEffect}from 'react';
 import { Grid,Button,TextField,Link } from '@material-ui/core';
+import Login from './login';
 import Alert from '@material-ui/lab/Alert';
-import Dashboard from './Dashboard';
 
-
-
-
-function Login() {
+function Signup() {
     const abc={
         username:"",
         password:""
     }
-   
+ 
+ const [error,setError]=useState(null);
+   const[userid,setUser]=useState(null);
     const [formData,setForm]=useState(abc);
     const {username,password}=formData
-    const[token,setToken]=useState(null);
-    const[uid,setuser]=useState(null);
-    const[error,setError]=useState(null);
 
-    // for reloading when username changes
-    const[u1,setU1]= useState(username);
-    const[p1,setP1]= useState(password);
-    let history =useHistory();
+    useEffect(() => {
+        if(userid){
+        setError(null);
+       
+        // history.push('/dashboard')
+        }
+        
+    }, [userid])
+
 
     const changeHandle = e =>{
         setForm({...formData,[e.target.name]:e.target.value});
-        setU1(e.target.username);
-        console.log('abc')
+        
+        console.log(formData)
 
     }
 
-                useEffect(() => {
-                    if(token){
-                    setError(null);
-                   
-                    // history.push('/dashboard')
-                    }
-                    
-                }, [token])
-
-
-
-     
-
-       const  SubmitHandle = async  e  =>{
+    const  SubmitHandle = async  e  =>{
         e.preventDefault();
 
         try{
-            const responseData = await fetch('http://localhost:8000/login',
+            const responseData = await fetch('http://localhost:8000/signup',
             {
                 method:'POST',
                 headers:{
@@ -64,8 +51,10 @@ function Login() {
                 if  (res.message){
                     throw(res.message);
                 }
-                setToken(res.token);
-                setuser(res.username);
+                // setToken(res.token);
+                // setuser(res.username);
+                setUser(res.username);
+                console.log(res.username);
                
 
             })
@@ -84,11 +73,11 @@ function Login() {
         }
         
     }
-    return (
-        <>
 
-        { !token
-        ?
+    return (
+        <div>
+           
+            
             <Grid container 
             direction="column" 
             justify="center"
@@ -98,7 +87,7 @@ function Login() {
 
                   <Grid>
                       <Grid item lg={12}>
-                          <div style={{textAlign:"left",marginBottom:"20px",fontWeight:'bold',fontSize:"25px",color:"#3F51B5"}}>LOGIN</div>
+                          <div style={{textAlign:"left",marginBottom:"20px",fontWeight:'bold',fontSize:"25px",color:"#3F51B5"}}>SIGN UP</div>
                       </Grid>
                   </Grid>  
 
@@ -133,48 +122,47 @@ function Login() {
                     />
               
                     <Button 
-                    type="submit" 
+                    type="submit"
+                    
                     fullWidth 
                     variant="contained" 
                     color="primary">
-                        Submit
+                        SIGN UP
                     </Button>
             </form>
             <Grid container>
                 <Grid item lg={12}>
-                    <Link href="/signup" >SignUp
+                    <Link href="/login" >login
                         </Link>
                     </Grid>
             </Grid>
+
             <Grid container style={{marginTop:"20px"}}>
                 <Grid item lg={12}>
-                        {error && <>
-                        <Alert severity="error">{error}</Alert>
-                    </>}
-                    <br/>
-                    {!error&&
-                    <div>{uid}</div>
-                    }
-                </Grid>
-            </Grid>
+                         { userid && <>
+                        <Alert severity="success">Your account has been created</Alert>
+                    </>
+                        }
                    
-
                 </Grid>
             </Grid>
-            :
 
-            <Dashboard  username={uid} token={token} />
+            <Grid container style={{marginTop:"20px"}}>
+                <Grid item lg={12}>
+                         {error && <>
+                        <Alert severity="error">{error}</Alert>
+                    </>
+                        }
+                   
+                </Grid>
+            </Grid>
 
-             }
-           
             
-          
-
-           
-
+            </Grid>
+            </Grid>
             
-        </>
+        </div>
     )
 }
 
-export default Login
+export default Signup

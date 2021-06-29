@@ -13,6 +13,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import Posttitle from './posttitle';
 
 const drawerWidth = 240;
 
@@ -83,6 +84,7 @@ export default function Dashboard(props) {
       <main className={classes.content}>
         <Toolbar />
         <Typography paragraph>
+            <Posttitle token={props.token}/>
      
         </Typography>
         <Typography paragraph>
