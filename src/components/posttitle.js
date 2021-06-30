@@ -28,7 +28,7 @@ function Posttitle(props) {
             // let token= "Bearer "+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGQ5OGFiMGE0ZGM3MDE4ODRmMjhjZWMiLCJ1c2VybmFtZSI6ImFobWVkIiwiaWF0IjoxNjI0OTcwNzQ0LCJleHAiOjE2MjQ5NzQzNDR9.zvISvBAkIqoMM4hcL15R-rJCSLOpUtb9hiRlcXGcKqI";
             // console.log(token);
             
-            const responseData = await fetch('http://localhost:8000/title/post',
+            const responseData = await fetch('https://backend1app.herokuapp.com/title/post',
             {
                 method:'POST',
                

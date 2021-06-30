@@ -48,7 +48,7 @@ function Login() {
         e.preventDefault();
 
         try{
-            const responseData = await fetch('http://localhost:8000/login',
+            const responseData = await fetch('https://backend1app.herokuapp.com/login',
             {
                 method:'POST',
                 headers:{
@@ -78,7 +78,7 @@ function Login() {
           
         }
         catch (err){
-            // setError(err);
+            setError("check your connection");
             console.log("error before");
 
         }
@@ -108,6 +108,7 @@ function Login() {
                 
                 <TextField 
                     style={{marginBottom:"20px"}}
+                    required
                     size="small" 
                     label="UserName" 
                     variant="outlined" 
@@ -122,6 +123,7 @@ function Login() {
                    
                  <TextField  
                         style={{marginBottom:"20px"}}
+                        required
                         size="small" 
                         fullWidth 
                         variant="outlined" 
