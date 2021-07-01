@@ -1,8 +1,9 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect,useContext} from 'react';
 import {useHistory} from 'react-router-dom';
 import { Grid,Button,TextField,Link } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import Dashboard from './Dashboard';
+import { AuthContext } from './auth';
 
 
 
@@ -15,14 +16,18 @@ function Login() {
    
     const [formData,setForm]=useState(abc);
     const {username,password}=formData
-    const[token,setToken]=useState(null);
-    const[uid,setuser]=useState(null);
+    // const[token,setToken]=useState(null);
+    
     const[error,setError]=useState(null);
+     const auth = useContext(AuthContext);
+     const[uid,setuser]=useState(auth.username);
 
     // for reloading when username changes
     const[u1,setU1]= useState(username);
-    const[p1,setP1]= useState(password);
-    let history =useHistory();
+    
+    // const [storedData,setData]=useState({uid:null,token:null})
+
+    // localStorage.setItem('userData',JSON.stringify({uid:uid,token:token}));
 
     const changeHandle = e =>{
         setForm({...formData,[e.target.name]:e.target.value});
@@ -32,13 +37,14 @@ function Login() {
     }
 
                 useEffect(() => {
-                    if(token){
+                    if(auth.token){
                     setError(null);
                    
-                    // history.push('/dashboard')
+                   
                     }
+                
                     
-                }, [token])
+                }, [auth.token])
 
 
 
@@ -48,7 +54,7 @@ function Login() {
         e.preventDefault();
 
         try{
-            const responseData = await fetch('https://backend1app.herokuapp.com/login',
+            const responseData = await fetch('http://localhost:8000/login',
             {
                 method:'POST',
                 headers:{
@@ -64,7 +70,8 @@ function Login() {
                 if  (res.message){
                     throw(res.message);
                 }
-                setToken(res.token);
+                // setToken(res.token);
+                auth.login(res.username,res.token);
                 setuser(res.username);
                
 
@@ -87,7 +94,7 @@ function Login() {
     return (
         <>
 
-        { !token
+        { !auth.token
         ?
             <Grid container 
             direction="column" 
@@ -142,7 +149,7 @@ function Login() {
                         Submit
                     </Button>
             </form>
-            <Grid container>
+            <Grid container style={{marginTop:"20px"}}>
                 <Grid item lg={12}>
                     <Link href="/signup" >SignUp
                         </Link>
@@ -154,9 +161,9 @@ function Login() {
                         <Alert severity="error">{error}</Alert>
                     </>}
                     <br/>
-                    {!error&&
+                    {/* {!error&&
                     <div>{uid}</div>
-                    }
+                    } */}
                 </Grid>
             </Grid>
                    
@@ -165,7 +172,7 @@ function Login() {
             </Grid>
             :
 
-            <Dashboard  username={uid} token={token} />
+            <Dashboard  username={auth.username} token={auth.token} />
 
              }
            

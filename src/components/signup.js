@@ -35,7 +35,7 @@ function Signup() {
         e.preventDefault();
 
         try{
-            const responseData = await fetch('https://backend1app.herokuapp.com/signup',
+            const responseData = await fetch('http://localhost:8000/signup',
             {
                 method:'POST',
                 headers:{
@@ -132,7 +132,7 @@ function Signup() {
                         SIGN UP
                     </Button>
             </form>
-            <Grid container>
+            <Grid container style={{marginTop:"20px"}}>
                 <Grid item lg={12}>
                     <Link href="/login" >login
                         </Link>
