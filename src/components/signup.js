@@ -35,7 +35,7 @@ function Signup() {
         e.preventDefault();
 
         try{
-            const responseData = await fetch('http://localhost:8000/signup',
+            const responseData = await fetch('https://backend1app.herokuapp.com/signup',
             {
                 method:'POST',
                 headers:{

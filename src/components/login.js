@@ -16,22 +16,15 @@ function Login() {
    
     const [formData,setForm]=useState(abc);
     const {username,password}=formData
-    // const[token,setToken]=useState(null);
+  
     
     const[error,setError]=useState(null);
      const auth = useContext(AuthContext);
-     const[uid,setuser]=useState(auth.username);
-
-    // for reloading when username changes
-    const[u1,setU1]= useState(username);
     
-    // const [storedData,setData]=useState({uid:null,token:null})
-
-    // localStorage.setItem('userData',JSON.stringify({uid:uid,token:token}));
 
     const changeHandle = e =>{
         setForm({...formData,[e.target.name]:e.target.value});
-        setU1(e.target.username);
+        
         console.log('abc')
 
     }
@@ -54,7 +47,7 @@ function Login() {
         e.preventDefault();
 
         try{
-            const responseData = await fetch('http://localhost:8000/login',
+            const responseData = await fetch('https://backend1app.herokuapp.com/login',
             {
                 method:'POST',
                 headers:{
@@ -70,9 +63,9 @@ function Login() {
                 if  (res.message){
                     throw(res.message);
                 }
-                // setToken(res.token);
+               
                 auth.login(res.username,res.token);
-                setuser(res.username);
+              
                
 
             })

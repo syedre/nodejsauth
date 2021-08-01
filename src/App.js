@@ -7,17 +7,29 @@ import Login from "./components/login";
 import Signup from "./components/signup";
 import { AuthContext } from "./components/auth";
 
+
+let logoutTimer;
+
 const  App=() => {
 
   const [token,setToken]=useState(false);
   const [user,setUserr]=useState(null);
+  const[tokenRemainingtime,setTokenRemainingtime]=useState();
 
   const login = useCallback(
-    (username,token) => {
+    (username,token,expirationDate) => {
       setToken(token);
       setUserr(username);
-      
-    localStorage.setItem('userData',JSON.stringify({token:token,user:username}));
+
+      const tokenexpirationDate = expirationDate || new Date(new Date().getTime() + 1000*60*60);
+      setTokenRemainingtime(tokenexpirationDate);
+           localStorage.setItem(
+           'userData',
+            JSON.stringify({
+              token:token,
+              user:username,
+              expiration:tokenexpirationDate.toISOString()
+      }));
      
     },
     [],
@@ -26,16 +38,38 @@ const  App=() => {
   const logout = useCallback(
     () => {
       setToken(null);
+      setTokenRemainingtime(null);
       localStorage.removeItem('userData');
     },
     [],
   )
 
   useEffect(() => {
+    if(token&&tokenRemainingtime){
+      const remainingTime = tokenRemainingtime.getTime() - new Date().getTime();
 
+      logoutTimer = setTimeout(logout,remainingTime);
+      console.log(logoutTimer);
+    }
+    else{
+      clearTimeout(logoutTimer);
+    }
+    
+   
+  }, [token,logout,tokenRemainingtime])
+
+
+
+  useEffect(() => {
+
+    
     const storedData =JSON.parse(localStorage.getItem('userData'));
-      if(storedData&& storedData.token){
-        login(storedData.user,storedData.token)
+      if(
+        storedData&& 
+        storedData.token &&  
+        new Date(storedData.expiration) > new Date())
+      {
+        login(storedData.user,storedData.token, new Date(storedData.expiration))
       }
     
     
