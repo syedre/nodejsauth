@@ -6,6 +6,7 @@ import Login from "./components/login";
 // import Dashboard from "./components/Dashboard";
 import Signup from "./components/signup";
 import { AuthContext } from "./components/auth";
+import Chat from "./components/chat"
 
 
 let logoutTimer;
@@ -84,14 +85,16 @@ const  App=() => {
 
     <AuthContext.Provider value={{username:user,token:token,login:login,logout:logout}}>
         <Router >
-        <Switch>
-          <Route exact path="/" component={Login}/>
-          <Route exact path="/confirm" component={Confirm}/>
-          <Route exact path="/login" component={Login}/>
-          <Route exact path="/signup" component={Signup}/>
+            <Switch>
+              <Route exact path="/" component={Login}/>
+              <Route exact path="/confirm" component={Confirm}/>
+              <Route exact path="/login" component={Login}/>
+              
+              <Route exact path="/signup" component={Signup}/>
+              <Route exact path="/chat" component={Chat}/>
 
 
-        </Switch>
+            </Switch>
 
       
       </Router>

@@ -16,6 +16,7 @@ function Login() {
    
     const [formData,setForm]=useState(abc);
     const {username,password}=formData
+    const [loading,setLoading]=useState(null);
   
     
     const[error,setError]=useState(null);
@@ -29,15 +30,15 @@ function Login() {
 
     }
 
-                useEffect(() => {
-                    if(auth.token){
-                    setError(null);
-                   
-                   
-                    }
-                
-                    
-                }, [auth.token])
+    useEffect(() => {
+        if(auth.token){
+        setError(null);
+    
+    
+        }
+    
+        
+    }, [auth.token])
 
 
 
@@ -45,6 +46,7 @@ function Login() {
 
        const  SubmitHandle = async  e  =>{
         e.preventDefault();
+        setLoading(true);
 
         try{
             const responseData = await fetch('https://backend1app.herokuapp.com/login',
@@ -77,11 +79,13 @@ function Login() {
             
           
         }
+      
         catch (err){
             setError("check your connection");
             console.log("error before");
 
         }
+        setLoading(false);
         
     }
     return (
@@ -154,14 +158,14 @@ function Login() {
                         <Alert severity="error">{error}</Alert>
                     </>}
                     <br/>
-                    {/* {!error&&
-                    <div>{uid}</div>
-                    } */}
+                   
                 </Grid>
             </Grid>
                    
 
                 </Grid>
+
+               
             </Grid>
             :
 
